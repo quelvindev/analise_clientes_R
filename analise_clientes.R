@@ -1,6 +1,21 @@
 
+
+
+os <- Sys.info()[['sysname']]
+
+if (os == "Linux") {
+    setwd("/home/quelvin/r_projects/analise_clientes_R/")
+} else if (os == "Windows") {
+    setwd("C:/Users/Cerqueira/r_projects/analise_clientes/")
+} else {
+  print(paste("Você está usando:", os))
+}
+
+
+
+
 # Definindo pasta de trabalho
-setwd("C:/Users/Cerqueira/r_projects/analise_clientes/")
+
 
 # Importando dataset
 df <- read.csv("data/clientes_8000-1.csv",
@@ -259,7 +274,8 @@ fp_idade
 
 barplot(sort(fa_idade,decreasing = TRUE),las=2)
 
-# MOda 
+# Medidas de resumo
+# Moda 
 names(fa_idade)[which.max(fa_idade)]
 
 # Mediana
@@ -271,35 +287,85 @@ mean(df$idade)
 mean(df$idade,na.rm = TRUE)
 
 # Quartis
+# São amplamente utilizados em estatística para entender a distribuição de um 
+# conjunto de dados. Os quartis ajudam a identificar a dispersão e a localização central dos dados, 
+# facilitando a análise de tendências e variações. Eles são parte de uma análise descritiva mais 
+# ampla que inclui outras medidas como mediana, média, e desvio padrão.
+
 quantile(df$idade)
-quantile(df$idade,na.rm = TRUE)
+qt_idade <- quantile(df$idade,na.rm = TRUE)
+
+qt_idade
+boxplot(df$idade, 
+        main="Boxplot Idade",
+        xlab="",
+        ylab="Quantidade")
+
+boxplot(df$idade~df$região)
 
 
 max(df$idade)
 min(df$idade)
 
 # Amplitude 
+# Mede a dispersão dos dados: A amplitude fornece uma ideia rápida de como os dados 
+# estão espalhados. Um valor alto de amplitude indica que os dados estão amplamente 
+# distribuídos, enquanto uma amplitude baixa indica que os dados estão concentrados em t
+# orno de valores semelhantes.
+# 
+# Comparação de variabilidade entre conjuntos de dados: A amplitude é útil quando 
+# você quer comparar rapidamente a variabilidade entre diferentes conjuntos de dados. 
+# Se dois conjuntos de dados tiverem médias semelhantes, mas amplitudes diferentes, o 
+# conjunto com maior amplitude terá mais variabilidade.
 diff(range(df$idade))
 diff(range(df$idade,na.rm = TRUE))
 
 # Variância
+# A variância quantifica o grau de espalhamento dos dados em torno da média. 
+# Valores maiores de variância indicam que os dados estão mais dispersos 
+# (maior variabilidade), enquanto valores menores de variância indicam que os dados 
+# estão mais próximos da média (menor variabilidade).
+# 
+# Identificação de padrões de variabilidade: A variância ajuda a identificar se 
+# um conjunto de dados tem muita ou pouca variação. Isso é útil em várias áreas, como economia, 
+# engenharia, finanças e ciências sociais, onde compreender a estabilidade ou a 
+# flutuação dos dados é crucial.
 var(df$idade)
 
 # Desvio Padrão
+# Dispersão em torno da média: O desvio padrão de 13.57 significa que, em média, os 
+# valores do seu conjunto de dados estão a cerca de 13.57 unidades de distância da média.
+# Comparação com a média: Se a média dos dados for, por exemplo, 50, o desvio padrão 
+# de 13.57 sugere que os dados variam moderadamente em torno da média, com muitos 
+# valores entre 36.43 (50 - 13.57) e 63.57 (50 + 13.57).
 sd(df$idade)
 
+
 # Coeficiente de variação
+# O CV é útil quando você quer comparar a variabilidade entre dois ou mais conjuntos 
+# de dados que estão em diferentes escalas. Como ele é uma medida relativa (percentual), 
+# ele permite comparações diretas, o que não é possível com medidas de dispersão absolutas 
+# como o desvio padrão ou a variância.
 sd(df$idade)/mean(df$idade)
 
-# Amplitude interquartilica
+# # Amplitude interquartilica
+# O IQR mostra a variação dos valores centrais de um conjunto de dados, focando 
+# nos 50% do meio. Isso exclui os valores extremos (outliers) e fornece uma
+# medida mais robusta de dispersão do que a amplitude total, que considera o
+# s valores mínimo e máximo.
 quartis_idade <-quantile(df$idade)
 quartis_idade[4]-quartis_idade[2]
 
 # Frequência acumulada 
+# A frequência acumulada ajuda a entender como os dados se acumulam à medida que 
+# se avança pelas diferentes categorias ou intervalos. Isso facilita a análise de 
+# onde estão concentradas as observações em um conjunto de dados.
+# Exemplo: Se você estiver analisando notas de uma turma e calcular a frequência 
+# acumulada, poderá ver quantos alunos tiraram notas abaixo de um certo valor (como 50, 60, 70, etc.).
 faa_idade <- cumsum(df$idade)
 faa_idade2 <- cumsum(head(df$idade,n = 10))
 
-head
+
 barplot(faa_idade)
 pie(faa_idade)
 plot(fa_idade,
@@ -312,4 +378,5 @@ plot(faa_idade2,
      ylab = "Quantidade",
      xlab="Idades",
      type = "s")
+
 
