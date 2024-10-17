@@ -379,4 +379,21 @@ plot(faa_idade2,
      xlab="Idades",
      type = "s")
 
+# Contando a quantidade de classes
+clases_salario <- nclass.Sturges(df$salário)+1
 
+# Difinindo limites de cortes da clases 
+min_val <- min(df$salário, na.rm = TRUE)  # Ignora NA
+max_val <- max(df$salário, na.rm = TRUE)  # Ignora NA
+cut(df$salário,breaks = seq(min_val,max_val,length.out = clases_salario))
+# Definingo agrupamentos
+grupos_salario <- cut(df$salário,breaks = seq(min_val,max_val,length.out = clases_salario))
+
+fa_grupos_salario <- table(grupos_salario)
+
+fa_grupos_salario
+barplot(fa_grupos_salario)
+hist(df$salário)
+hist(df$salário,freq = FALSE)
+
+boxplot(df$salário)
