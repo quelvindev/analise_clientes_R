@@ -65,8 +65,9 @@ df$escolaridade <- factor(df$escolaridade,levels
                               "Ensino Médio Completo",
                               "Superior Incompleto",
                               "Superior Completo",
-                              "Mestrado",
-                              "Pós-Graduado"),
+                              "Pós-Graduado",
+                              "Mestrado"
+                              ),
                           ordered = TRUE)
 
 levels(df$escolaridade)
@@ -397,3 +398,49 @@ hist(df$salário)
 hist(df$salário,freq = FALSE)
 
 boxplot(df$salário)
+
+#######################ANALISE BIVARIADA########################################
+
+# Variáveis qualitativas
+
+# Frequẽncia absoluta
+fa_escol_civil <- with(df,table(escolaridade,Estado_civil))
+fa_escol_civil
+fa_escol_civil2 <-table(df$escolaridade,df$Estado_civil)
+
+# Frequência relativa
+fg_escol_civil <- prop.table(fa_escol_civil)
+fg_escol_civil
+# Frequência aboluta por escolaridade
+fa1_escol_civil <- prop.table(fa_escol_civil,margin = 1)
+fa1_escol_civil 
+
+# Frequência aboluta por estado civil
+fa2_escol_civil <- prop.table(fa_escol_civil,margin = 2)
+fa2_escol_civil
+
+?barplot()
+barplot(fa_escol_civil, legend.text = TRUE)
+# Inverter grafico
+barplot(t(fa_escol_civil), legend.text = TRUE,las=2)
+
+barplot(fa_escol_civil, legend.text = TRUE,beside = TRUE)
+
+# QUalitativa x Quantitavida
+
+?cut()
+quantile(df$salário)
+
+grupos_salario
+grupo_sal <- cut(df$salário,breaks = quantile(df$salário),include.lowest = TRUE)
+grupo_sal
+
+fa_sal_escol <-table(df$escolaridade,grupo_sal)
+fa_sal_escol
+
+boxplot(df$salário~df$escolaridade,las=2)
+?tapply()
+
+tapply(df$salário, df$escolaridade, mean)
+mean(df$salário, df$escolaridade)
+
