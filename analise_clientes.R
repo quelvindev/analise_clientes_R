@@ -438,9 +438,49 @@ grupo_sal
 fa_sal_escol <-table(df$escolaridade,grupo_sal)
 fa_sal_escol
 
+faa_sal_class_trab <- table(df$classe_trabalho,grupo_sal)
+
+faa_sal_raca <- table(df$raça,grupo_sal)
+faa_sal_raca
+
 boxplot(df$salário~df$escolaridade,las=2)
+boxplot(df$salário~df$classe_trabalho,las=2)
+boxplot(df$salário~df$raça,las=2)
 ?tapply()
 
 tapply(df$salário, df$escolaridade, mean)
-mean(df$salário, df$escolaridade)
+
+# Quantitativa x Quantitativa
+
+grupo_idade <- cut(df$idade,breaks = quantile(df$idade),include.lowest = TRUE)
+
+grupo_idade
+
+plot(df$idade,
+     df$salário)
+abline(lm(df$salário~df$idade), col = "red")
+
+install.packages("ggplot2")
+library(ggplot2)
+
+ggplot(df, aes(x = df$idade, y = df$salário)) +
+  geom_point(color = "blue", size = 3) +
+  geom_smooth(method = "lm", se = FALSE, color = "red") +
+  labs(title = "Gráfico de Dispersão com Regressão", x = "Variável X", y = "Variável Y")
+
+# Coeficiente de relação 
+#Pearson
+
+cor(df$idade,df$salário)
+
+cor(df$salário,df$idade,method = "kendall")
+
+cor(df$salário,df$idade,method = "spearman")
+
+cor(df$salário,df$escolaridade)
+
+anova_sal_escol  <- aov(df$salário~df$escolaridade)
+summary(anova_sal_escol)
+plot(anova_sal_escol)
+
 
